@@ -30,8 +30,9 @@ public class WeblogSpout implements IRichSpout {
     public void nextTuple() {
         try{
             // 如果当前读取数据不为空
-            if((value = br.readLine()) != null){
+            while((value = br.readLine()) != null){
                 collector.emit(new Values(value));
+                Thread.sleep(300);
             }
         }catch (Exception e){
             System.out.println("读取数据异常");
@@ -77,7 +78,7 @@ public class WeblogSpout implements IRichSpout {
 
     // 声明输出属性？
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("web-log"));
+        declarer.declare(new Fields("log"));
     }
 
     // 获取组件信息？

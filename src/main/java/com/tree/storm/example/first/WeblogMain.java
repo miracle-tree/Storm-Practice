@@ -2,7 +2,6 @@ package com.tree.storm.example.first;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
-import org.apache.storm.generated.StormTopology;
 import org.apache.storm.topology.TopologyBuilder;
 
 /**
@@ -20,11 +19,11 @@ public class WeblogMain {
 
         // 指定spout
         topologyBuilder.setSpout("spout",new WeblogSpout(),1);
-        topologyBuilder.setBolt("bolt",new WeblogBlot(),1);
+        topologyBuilder.setBolt("bolt",new WeblogBlot(),1).shuffleGrouping("spout");
 
         // 指定配置文件
         Config config = new Config();
-        config.setNumWorkers(2);
+        config.setNumWorkers(4);
 
         // 提交拓扑
         LocalCluster localCluster = new LocalCluster();

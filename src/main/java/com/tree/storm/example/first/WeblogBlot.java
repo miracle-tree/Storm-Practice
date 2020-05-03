@@ -4,8 +4,11 @@ import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
+import org.apache.storm.tuple.Values;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -33,9 +36,10 @@ public class WeblogBlot implements IRichBolt {
         value = tuple.getStringByField("log");
         if(value != null){
             num++;
-            System.err.println(Thread.currentThread().getName() + "lines  :" + num + "   session_id:" + value.split("\t")[1]);
+            System.err.println(Thread.currentThread().getName() + "lines  :" + num + "   session_id:" + value);
         }
         try {
+            collector.ack(tuple);
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -49,7 +53,7 @@ public class WeblogBlot implements IRichBolt {
 
     // 声明
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-
+        outputFieldsDeclarer.declare(new Fields(""));
     }
 
     // 获取组件配置
